@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AnimeTable from '@/components/AnimeTable.vue';
+import Pagination from '@/components/Pagination.vue';
 import StatusFilters from '@/components/StatusFilters.vue';
 import { Input } from '@/components/ui/input';
 import Loader from '@/components/ui/Loader.vue';
@@ -29,5 +30,6 @@ const typeFilters: string[] = ['tv', 'movie', 'ova', 'special', 'ona', 'music', 
     </div>
     <Loader v-if="animeStore.isLoading" />
     <AnimeTable v-else />
+    <Pagination />
   </main>
 </template>

@@ -12,7 +12,6 @@ const isSelected = (filter: StatusFilter) => selectedFilter.value === filter;
 
 <template>
   <main class="flex items-center gap-4">
-    <!-- Iterate over statusFilters and create a clickable element for each -->
     <div v-for="filter in statusFilters" :key="filter">
       <button
         class="px-4 py-2 rounded-md"
