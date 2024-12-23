@@ -23,3 +23,7 @@ export interface PaginatedContent {
 }
 
 export type AnimeStatus = 'Completed' | 'Upcoming' | 'Finished' | 'Airing' | 'Finished Airing';
+
+export const statusFilters = ['All', 'Currently Airing', 'Finished Airing', 'Upcoming'] as const;
+
+export type StatusFilter = (typeof statusFilters)[number];

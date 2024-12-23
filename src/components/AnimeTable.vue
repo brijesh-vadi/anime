@@ -6,13 +6,29 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 
 const animeStore = useAnimeStore();
 
-const animes = computed(() => {
+const filteredAnimes = computed(() => {
+  let filteredList = animeStore.animes;
+
+  // search query filter
   if (animeStore.searchQuery.trim()) {
-    return animeStore.animes.filter((anime) =>
+    filteredList = filteredList.filter((anime) =>
       anime.title.toLowerCase().includes(animeStore.searchQuery.toLowerCase())
     );
   }
-  return animeStore.animes;
+
+  // status filter
+  if (animeStore.selectedStatusFilter !== 'All') {
+    filteredList = filteredList.filter((anime) => anime.status === animeStore.selectedStatusFilter);
+  }
+
+  // type filter
+  if (animeStore.selectedTypeFilter) {
+    filteredList = filteredList.filter(
+      (anime) => anime.type.toLowerCase() === animeStore.selectedTypeFilter.toLowerCase()
+    );
+  }
+
+  return filteredList;
 });
 
 const animeStatusClass = (status: AnimeStatus) => {
@@ -51,13 +67,13 @@ const animeStatusClass = (status: AnimeStatus) => {
       </TableRow>
     </TableHeader>
     <TableBody>
-      <template v-if="!animes.length && !animeStore.isLoading">
+      <template v-if="!filteredAnimes.length && !animeStore.isLoading">
         <TableRow>
           <TableCell colspan="4" class="text-center py-10 font-semibold text-gray-500">No animes found.</TableCell>
         </TableRow>
       </template>
       <template v-else>
-        <TableRow v-for="anime in animes" :key="anime.id">
+        <TableRow v-for="anime in filteredAnimes" :key="anime.id">
           <TableCell class="font-medium">
             {{ anime.title }}
           </TableCell>

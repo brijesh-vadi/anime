@@ -16,7 +16,7 @@ const typeFilters: string[] = ['tv', 'movie', 'ova', 'special', 'ona', 'music', 
   <main class="p-6 flex flex-col gap-6">
     <StatusFilters />
     <div class="flex items-center gap-10">
-      <Select>
+      <Select v-model="animeStore.selectedTypeFilter">
         <SelectTrigger class="w-[180px]">
           <SelectValue placeholder="Select a type" />
         </SelectTrigger>
@@ -29,7 +29,9 @@ const typeFilters: string[] = ['tv', 'movie', 'ova', 'special', 'ona', 'music', 
       <Input v-model="animeStore.searchQuery" type="text" class="w-96" placeholder="Search..." />
     </div>
     <Loader v-if="animeStore.isLoading" />
-    <AnimeTable v-else />
-    <Pagination />
+    <template v-else>
+      <AnimeTable />
+      <Pagination />
+    </template>
   </main>
 </template>

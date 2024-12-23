@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import useAnimeStore from '@/stores/animeStore';
+import { statusFilters, type StatusFilter } from '@/types';
 
-const statusFilters = ['All', 'Airing', 'Completed', 'Upcoming'] as const;
+const animeStore = useAnimeStore();
 
-type StatusFilter = (typeof statusFilters)[number];
-
-const selectedFilter = ref<StatusFilter>('All');
-
-const isSelected = (filter: StatusFilter) => selectedFilter.value === filter;
+const isSelected = (filter: StatusFilter) => animeStore.selectedStatusFilter === filter;
 </script>
 
 <template>
@@ -19,7 +16,7 @@ const isSelected = (filter: StatusFilter) => selectedFilter.value === filter;
           'bg-zinc-800 text-white ': isSelected(filter),
           'text-zinc-700': !isSelected(filter),
         }"
-        @click="selectedFilter = filter">
+        @click="animeStore.selectedStatusFilter = filter">
         {{ filter }}
       </button>
     </div>

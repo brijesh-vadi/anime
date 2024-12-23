@@ -1,4 +1,4 @@
-import type { Anime, APIResponse, PaginatedContent } from '@/types';
+import type { Anime, APIResponse, PaginatedContent, StatusFilter } from '@/types';
 import axios from 'axios';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
@@ -6,6 +6,8 @@ import { ref } from 'vue';
 const useAnimeStore = defineStore('anime', () => {
   const animes = ref<Anime[]>([]);
   const isLoading = ref(false);
+  const selectedStatusFilter = ref<StatusFilter>('All');
+  const selectedTypeFilter = ref();
   const searchQuery = ref('');
   const paginatedContent = ref<PaginatedContent>({
     current_page: 1,
@@ -48,6 +50,8 @@ const useAnimeStore = defineStore('anime', () => {
     paginatedContent,
     searchQuery,
     setPage,
+    selectedStatusFilter,
+    selectedTypeFilter,
   };
 });
 

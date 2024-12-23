@@ -31,7 +31,7 @@ const handleNextPage = () => {
 </script>
 
 <template>
-  <Pagination v-slot="{ page }" :total="totalAnimes" :sibling-count="1" show-edges :default-page="1" class="mx-auto">
+  <Pagination :total="totalAnimes" :sibling-count="1" show-edges :default-page="1" class="mx-auto">
     <PaginationList v-slot="{ items }" class="flex items-center gap-1">
       <PaginationPrev @click="handlePreviousPage" />
 
@@ -40,7 +40,7 @@ const handleNextPage = () => {
           <Button
             @click="animeStore.setPage(item.value)"
             class="w-9 h-9 p-0"
-            :variant="item.value === page ? 'default' : 'outline'">
+            :variant="item.value === animeStore.paginatedContent.current_page ? 'default' : 'outline'">
             {{ item.value }}
           </Button>
         </PaginationListItem>
