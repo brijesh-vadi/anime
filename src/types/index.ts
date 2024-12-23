@@ -7,6 +7,7 @@ export interface Anime {
   id: string;
   title: string;
   rank: number;
+  type: string;
   status: string;
 }
 
@@ -20,3 +21,5 @@ export interface PaginatedContent {
     per_page: number;
   };
 }
+
+export type AnimeStatus = 'Completed' | 'Upcoming' | 'Finished' | 'Airing' | 'Finished Airing';
