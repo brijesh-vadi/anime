@@ -1,4 +1,13 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import useAnimeStore from '@/stores/animeStore';
+import { onMounted } from 'vue';
+
+const animeStore = useAnimeStore();
+
+onMounted(async () => {
+  await animeStore.getAnimes();
+});
+</script>
 
 <template>
   <main>
