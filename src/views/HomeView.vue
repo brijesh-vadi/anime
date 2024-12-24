@@ -36,10 +36,13 @@ const handleSearchQueryChange = (event: Event) => {
 watch(
   () => animeStore.selectedTypeFilter,
   (newVal) => {
-    animeStore.appliedFilters.push({
-      type: 'Type',
-      value: newVal,
-    });
+    if (newVal) {
+      animeStore.appliedFilters = animeStore.appliedFilters.filter((filter) => filter.type !== 'Type');
+      animeStore.appliedFilters.push({
+        type: 'Type',
+        value: newVal,
+      });
+    }
   }
 );
 </script>
@@ -54,7 +57,6 @@ watch(
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem value="all">All</SelectItem>
             <SelectItem v-for="type in typeFilters" :value="type">{{ type.toUpperCase() }}</SelectItem>
           </SelectGroup>
         </SelectContent>

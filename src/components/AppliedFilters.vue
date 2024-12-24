@@ -13,6 +13,9 @@ const appliedFilters = computed(() => {
 
 const handleClearAppliedFilters = () => {
   animeStore.appliedFilters = [];
+  animeStore.searchQuery = '';
+  animeStore.selectedStatusFilter = 'All';
+  animeStore.selectedTypeFilter = '';
 };
 </script>
 

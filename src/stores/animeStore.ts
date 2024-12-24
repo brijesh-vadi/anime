@@ -7,13 +7,13 @@ const useAnimeStore = defineStore('anime', () => {
   const animes = ref<Anime[]>([]);
   const isLoading = ref(false);
   const selectedStatusFilter = ref<StatusFilter>('All');
-  const selectedTypeFilter = ref();
+  const selectedTypeFilter = ref('');
   const appliedFilters = ref<AppliedFilter[]>([]);
   const searchQuery = ref('');
   const paginatedContent = ref<PaginatedContent>({
     current_page: 1,
     last_visible_page: 1,
-    has_next_page: false,
+    has_next_page: true,
     items: {
       count: 0,
       total: 0,

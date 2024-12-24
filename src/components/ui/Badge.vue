@@ -11,6 +11,18 @@ const animeStore = useAnimeStore();
 
 const handleRemoveFilter = (appliedFilter: AppliedFilter) => {
   animeStore.appliedFilters = animeStore.appliedFilters.filter((filter) => filter.type !== appliedFilter.type);
+
+  switch (appliedFilter.type) {
+    case 'Status':
+      animeStore.selectedStatusFilter = 'All';
+      break;
+    case 'Type':
+      animeStore.selectedTypeFilter = '';
+      break;
+    case 'Title':
+      animeStore.searchQuery = '';
+      break;
+  }
 };
 </script>
 

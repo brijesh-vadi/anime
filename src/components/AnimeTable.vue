@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 const animeStore = useAnimeStore();
 
 const filteredAnimes = computed(() => {
-  let filteredList = animeStore.animes;
+  let filteredList = [...animeStore.animes];
 
   if (animeStore.searchQuery.trim()) {
     filteredList = filteredList.filter((anime) =>
@@ -15,16 +15,18 @@ const filteredAnimes = computed(() => {
     );
   }
 
-  switch (animeStore.selectedStatusFilter) {
-    case 'Airing':
-      filteredList = filteredList.filter((anime) => anime.status === 'Currently Airing');
-      break;
-    case 'Completed':
-      filteredList = filteredList.filter((anime) => anime.status === 'Finished Airing');
-      break;
-    case 'Upcoming':
-      filteredList = filteredList.filter((anime) => anime.status === 'Upcoming');
-      break;
+  if (animeStore.selectedStatusFilter !== 'All') {
+    switch (animeStore.selectedStatusFilter) {
+      case 'Airing':
+        filteredList = filteredList.filter((anime) => anime.status === 'Currently Airing');
+        break;
+      case 'Completed':
+        filteredList = filteredList.filter((anime) => anime.status === 'Finished Airing');
+        break;
+      case 'Upcoming':
+        filteredList = filteredList.filter((anime) => anime.status === 'Upcoming');
+        break;
+    }
   }
 
   if (animeStore.selectedTypeFilter) {
@@ -41,13 +43,13 @@ const animeStatusClass = (status: AnimeStatus) => {
 
   switch (status) {
     case 'Currently Airing':
-      classes += '  text-zinc-300 ';
+      classes += ' text-zinc-300 ';
       break;
     case 'Upcoming':
       classes += ' text-yellow-500';
       break;
     case 'Finished Airing':
-      classes += '  text-green-500 ';
+      classes += ' text-green-500 ';
       break;
   }
 
@@ -56,6 +58,7 @@ const animeStatusClass = (status: AnimeStatus) => {
 </script>
 
 <template>
+  <div>{{ filteredAnimes.length }} results found</div>
   <Table>
     <TableHeader>
       <TableRow>
