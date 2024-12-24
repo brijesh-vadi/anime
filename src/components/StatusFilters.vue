@@ -14,7 +14,7 @@ const isSelected = (filter: StatusFilter) => animeStore.selectedStatusFilter ===
         class="px-4 py-2 rounded-md"
         :class="{
           'bg-zinc-800 text-white ': isSelected(filter),
-          'text-zinc-700': !isSelected(filter),
+          ' text-zinc-300': !isSelected(filter),
         }"
         @click="animeStore.selectedStatusFilter = filter">
         {{ filter }}

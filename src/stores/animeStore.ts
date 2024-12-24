@@ -1,4 +1,4 @@
-import type { Anime, APIResponse, PaginatedContent, StatusFilter } from '@/types';
+import type { Anime, APIResponse, AppliedFilter, PaginatedContent, StatusFilter } from '@/types';
 import axios from 'axios';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
@@ -8,6 +8,7 @@ const useAnimeStore = defineStore('anime', () => {
   const isLoading = ref(false);
   const selectedStatusFilter = ref<StatusFilter>('All');
   const selectedTypeFilter = ref();
+  const appliedFilters = ref<AppliedFilter[]>([]);
   const searchQuery = ref('');
   const paginatedContent = ref<PaginatedContent>({
     current_page: 1,
@@ -24,7 +25,7 @@ const useAnimeStore = defineStore('anime', () => {
     try {
       isLoading.value = true;
       const { data } = await axios.get<APIResponse>(
-        `https://api.jikan.moe/v4/anime?sort=desc&page=${paginatedContent.value?.current_page}`
+        `https://api.jikan.moe/v4/anime?sort=desc&page=${paginatedContent.value?.current_page}&limit=10`
       );
 
       animes.value = data.data;
@@ -43,6 +44,10 @@ const useAnimeStore = defineStore('anime', () => {
     }
   };
 
+  const setAppliedFilters = (filter: AppliedFilter) => {
+    if (filter) appliedFilters.value.push(filter);
+  };
+
   return {
     animes,
     isLoading,
@@ -52,6 +57,8 @@ const useAnimeStore = defineStore('anime', () => {
     setPage,
     selectedStatusFilter,
     selectedTypeFilter,
+    appliedFilters,
+    setAppliedFilters,
   };
 });
 

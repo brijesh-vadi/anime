@@ -10,6 +10,8 @@ import {
   PaginationNext,
   PaginationPrev,
 } from './ui/pagination';
+import PaginationLast from './ui/pagination/PaginationLast.vue';
+import PaginationFirst from './ui/pagination/PaginationFirst.vue';
 
 const animeStore = useAnimeStore();
 
@@ -28,11 +30,20 @@ const handleNextPage = () => {
     animeStore.setPage(animeStore.paginatedContent.current_page + 1);
   }
 };
+
+const handleFirstPage = () => {
+  animeStore.setPage(1);
+};
+
+const handleLastPage = () => {
+  animeStore.setPage(animeStore.paginatedContent.last_visible_page);
+};
 </script>
 
 <template>
   <Pagination :total="totalAnimes" :sibling-count="1" show-edges :default-page="1" class="mx-auto">
     <PaginationList v-slot="{ items }" class="flex items-center gap-1">
+      <PaginationFirst @click="handleFirstPage" />
       <PaginationPrev @click="handlePreviousPage" />
 
       <template v-for="(item, index) in items">
@@ -48,6 +59,7 @@ const handleNextPage = () => {
       </template>
 
       <PaginationNext @click="handleNextPage" />
+      <PaginationLast @click="handleLastPage" />
     </PaginationList>
   </Pagination>
 </template>

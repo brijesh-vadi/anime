@@ -9,19 +9,24 @@ const animeStore = useAnimeStore();
 const filteredAnimes = computed(() => {
   let filteredList = animeStore.animes;
 
-  // search query filter
   if (animeStore.searchQuery.trim()) {
     filteredList = filteredList.filter((anime) =>
       anime.title.toLowerCase().includes(animeStore.searchQuery.toLowerCase())
     );
   }
 
-  // status filter
-  if (animeStore.selectedStatusFilter !== 'All') {
-    filteredList = filteredList.filter((anime) => anime.status === animeStore.selectedStatusFilter);
+  switch (animeStore.selectedStatusFilter) {
+    case 'Airing':
+      filteredList = filteredList.filter((anime) => anime.status === 'Currently Airing');
+      break;
+    case 'Completed':
+      filteredList = filteredList.filter((anime) => anime.status === 'Finished Airing');
+      break;
+    case 'Upcoming':
+      filteredList = filteredList.filter((anime) => anime.status === 'Upcoming');
+      break;
   }
 
-  // type filter
   if (animeStore.selectedTypeFilter) {
     filteredList = filteredList.filter(
       (anime) => anime.type.toLowerCase() === animeStore.selectedTypeFilter.toLowerCase()
@@ -35,20 +40,14 @@ const animeStatusClass = (status: AnimeStatus) => {
   let classes = 'px-4 py-2 border rounded-md w-fit';
 
   switch (status) {
-    case 'Airing':
-      classes += ' bg-red-100 text-red-500 border-red-500';
-      break;
-    case 'Completed':
-      classes += ' bg-green-100 text-green-500';
+    case 'Currently Airing':
+      classes += '  text-zinc-300 ';
       break;
     case 'Upcoming':
-      classes += ' bg-yellow-100 text-yellow-500';
-      break;
-    case 'Finished':
-      classes += ' bg-gray-100 text-gray-500';
+      classes += ' text-yellow-500';
       break;
     case 'Finished Airing':
-      classes += ' bg-blue-100 text-blue-500 border-blue-500';
+      classes += '  text-green-500 ';
       break;
   }
 
