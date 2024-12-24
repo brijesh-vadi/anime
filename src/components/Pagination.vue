@@ -38,13 +38,25 @@ const handleFirstPage = () => {
 const handleLastPage = () => {
   animeStore.setPage(animeStore.paginatedContent.last_visible_page);
 };
+
+const hasNextPage = computed(() => {
+  return animeStore.paginatedContent.has_next_page;
+});
+
+const hasPreviousPage = computed(() => {
+  return animeStore.paginatedContent.current_page > 1;
+});
+
+const isFirstPage = computed(() => {
+  return animeStore.paginatedContent.current_page === 1;
+});
 </script>
 
 <template>
   <Pagination :total="totalAnimes" :sibling-count="1" show-edges :default-page="1" class="mx-auto">
     <PaginationList v-slot="{ items }" class="flex items-center gap-1">
-      <PaginationFirst @click="handleFirstPage" />
-      <PaginationPrev @click="handlePreviousPage" />
+      <PaginationFirst @click="handleFirstPage" :disabled="isFirstPage" />
+      <PaginationPrev @click="handlePreviousPage" :disabled="!hasPreviousPage" />
 
       <template v-for="(item, index) in items">
         <PaginationListItem v-if="item.type === 'page'" :key="index" :value="item.value" as-child>
@@ -58,8 +70,8 @@ const handleLastPage = () => {
         <PaginationEllipsis v-else :key="item.type" :index="index" />
       </template>
 
-      <PaginationNext @click="handleNextPage" />
-      <PaginationLast @click="handleLastPage" />
+      <PaginationNext @click="handleNextPage" :disabled="!hasNextPage" />
+      <PaginationLast @click="handleLastPage" :disabled="!hasNextPage" />
     </PaginationList>
   </Pagination>
 </template>
