@@ -4,7 +4,7 @@ export interface APIResponse {
 }
 
 export interface Anime {
-  id: string;
+  mal_id: number;
   title: string;
   rank: number;
   type: string;

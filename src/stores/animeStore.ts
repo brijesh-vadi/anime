@@ -1,10 +1,11 @@
 import type { Anime, APIResponse, AppliedFilter, PaginatedContent, StatusFilter } from '@/types';
 import axios from 'axios';
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const useAnimeStore = defineStore('anime', () => {
   const animes = ref<Anime[]>([]);
+  const favoriteAnimes = ref<Anime[]>([]);
   const isLoading = ref(false);
   const selectedStatusFilter = ref<StatusFilter>('All');
   const selectedTypeFilter = ref('');
@@ -20,6 +21,20 @@ const useAnimeStore = defineStore('anime', () => {
       per_page: 0,
     },
   });
+
+  const storedAnimes = localStorage.getItem('anime');
+  if (storedAnimes) {
+    favoriteAnimes.value = JSON.parse(storedAnimes);
+    // favoriteAnimes.value = [...favoriteAnimes.value];
+  }
+
+  watch(
+    favoriteAnimes,
+    (newValue) => {
+      localStorage.setItem('favoriteAnimes', JSON.stringify(newValue));
+    },
+    { deep: true }
+  );
 
   const getAnimes = async (): Promise<void> => {
     try {
@@ -48,6 +63,23 @@ const useAnimeStore = defineStore('anime', () => {
     if (filter) appliedFilters.value.push(filter);
   };
 
+  const toggleFavoriteAnime = (id: number) => {
+    const animeToToggle = animes.value.find((anime) => anime.mal_id === id);
+    if (!animeToToggle) return;
+
+    const existingIndex = favoriteAnimes.value.findIndex((anime) => anime.mal_id === id);
+
+    if (existingIndex === -1) {
+      favoriteAnimes.value.push(animeToToggle);
+    } else {
+      favoriteAnimes.value.splice(existingIndex, 1);
+    }
+  };
+
+  const isAnimeFavorite = (id: number): boolean => {
+    return favoriteAnimes.value.some((anime) => anime.mal_id === id);
+  };
+
   return {
     animes,
     isLoading,
@@ -59,6 +91,9 @@ const useAnimeStore = defineStore('anime', () => {
     selectedTypeFilter,
     appliedFilters,
     setAppliedFilters,
+    favoriteAnimes,
+    toggleFavoriteAnime,
+    isAnimeFavorite,
   };
 });
 

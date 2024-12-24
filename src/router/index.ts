@@ -9,6 +9,11 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     },
+    {
+      path: '/favorites',
+      name: 'favorites',
+      component: () => import('../views/FavoriteAnimesView.vue'),
+    },
   ],
 });
 

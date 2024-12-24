@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { animeStatusClass } from '@/lib/utils';
 import useAnimeStore from '@/stores/animeStore';
 import type { AnimeStatus } from '@/types';
+import { Heart } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 
@@ -38,22 +40,17 @@ const filteredAnimes = computed(() => {
   return filteredList;
 });
 
-const animeStatusClass = (status: AnimeStatus) => {
-  let classes = 'px-4 py-2 border rounded-md w-fit';
+const favoriteIconClass = (id: number) => {
+  const isFavorite = animeStore.isAnimeFavorite(id);
 
-  switch (status) {
-    case 'Currently Airing':
-      classes += ' text-zinc-300 ';
-      break;
-    case 'Upcoming':
-      classes += ' text-yellow-500';
-      break;
-    case 'Finished Airing':
-      classes += ' text-green-500 ';
-      break;
-  }
+  return {
+    'text-red-500 fill-red-500': isFavorite,
+    'hover:text-red-500 cursor-pointer transition-colors': true,
+  };
+};
 
-  return classes;
+const handleAnimeFavorite = (id: number) => {
+  animeStore.toggleFavoriteAnime(id);
 };
 </script>
 
@@ -65,6 +62,7 @@ const animeStatusClass = (status: AnimeStatus) => {
         <TableHead>Title</TableHead>
         <TableHead>Rank</TableHead>
         <TableHead>Type</TableHead>
+        <TableHead>Favorite</TableHead>
         <TableHead class="text-right">Status</TableHead>
       </TableRow>
     </TableHeader>
@@ -75,7 +73,7 @@ const animeStatusClass = (status: AnimeStatus) => {
         </TableRow>
       </template>
       <template v-else>
-        <TableRow v-for="anime in filteredAnimes" :key="anime.id">
+        <TableRow v-for="anime in filteredAnimes" :key="anime.mal_id">
           <TableCell class="font-medium">
             {{ anime.title }}
           </TableCell>
@@ -84,6 +82,9 @@ const animeStatusClass = (status: AnimeStatus) => {
           </TableCell>
           <TableCell class="font-medium">
             {{ anime.type }}
+          </TableCell>
+          <TableCell class="font-medium">
+            <Heart :size="16" :class="favoriteIconClass(anime.mal_id)" @click="handleAnimeFavorite(anime.mal_id)" />
           </TableCell>
           <TableCell class="font-medium text-right w-fit">
             <span :class="animeStatusClass(anime.status as AnimeStatus)">

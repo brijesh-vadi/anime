@@ -13,7 +13,9 @@ const mode = useDark();
 </script>
 
 <template>
-  <RouterView />
+  <div class="p-6">
+    <RouterView />
+  </div>
 </template>
 
 <style scoped></style>

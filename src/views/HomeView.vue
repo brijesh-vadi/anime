@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import Loader from '@/components/ui/Loader.vue';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import useAnimeStore from '@/stores/animeStore';
+import { Heart } from 'lucide-vue-next';
 import { watch } from 'vue';
 
 const animeStore = useAnimeStore();
@@ -48,8 +49,16 @@ watch(
 </script>
 
 <template>
-  <main class="p-6 flex flex-col gap-6">
-    <StatusFilters />
+  <main class="flex flex-col gap-6">
+    <div class="flex items-center justify-between">
+      <StatusFilters />
+      <RouterLink
+        to="/favorites"
+        class="flex items-center gap-2 text-red-500 hover:bg-red-500 hover:text-zinc-300 px-4 py-2 rounded-md transition-all duration-200">
+        <Heart :size="16" />
+        <span>Favorites</span>
+      </RouterLink>
+    </div>
     <div class="flex items-center gap-10">
       <Select v-model="animeStore.selectedTypeFilter">
         <SelectTrigger class="w-[180px]">
